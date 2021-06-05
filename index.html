@@ -1,10 +1,34 @@
 <!DOCTYPE html>
-<html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Title</title>
+  <title>JSON to Google Sheets exporter</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+  <link rel="stylesheet" href="https://code.getmdl.io/1.3.0/material.yellow-lime.min.css">
+  <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-<p>Good afternoon</p>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.12/ace.js"></script>
+<script src="https://code.getmdl.io/1.3.0/material.js"></script>
+<script defer src="script.js"></script>
+<div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
+  <header class="mdl-layout__header">
+    <div class="mdl-layout__header-row">
+      <span class="mdl-layout-title">JSON to Google Sheets exporter</span>
+      <div class="mdl-layout-spacer"></div>
+      <nav class="mdl-navigation">
+        <a class="mdl-navigation__link"
+           href="https://github.com/jimblackler/jsonworkspace">GitHub</a>
+      </nav>
+    </div>
+  </header>
+  <div class="mdl-layout__drawer">
+    <span class="mdl-layout-title">Tools</span>
+  </div>
+  <main class="mdl-layout__content">
+    <div class="mdl-grid">
+      <div class="mdl-cell mdl-cell--6-col mdl-cell--4-col-tablet mdl-cell--2-col-phone">
+        <div class="tab-content validate generate json5" id="documentEditor"></div>
+      </div>
+    </div>
+  </main>
+</div>
 </body>
-</html>
