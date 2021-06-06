@@ -1,0 +1,34 @@
+plugins {
+    id 'com.google.cloud.tools.appengine' version '2.4.1'
+    id 'java'
+    id 'war'
+}
+
+sourceCompatibility = JavaVersion.VERSION_1_8
+targetCompatibility = JavaVersion.VERSION_1_8
+
+group = 'net.jimblackler.jsonworkspace'
+version = '0.1'
+
+dependencies {
+
+}
+
+sourceSets {
+    main {
+        resources {
+            srcDir 'resources'
+        }
+    }
+}
+
+appengine {
+    run {
+        automaticRestart = true
+    }
+    deploy {
+        version = 'GCLOUD_CONFIG'
+        projectId = 'jsonworkspace'
+        promote = false
+    }
+}
