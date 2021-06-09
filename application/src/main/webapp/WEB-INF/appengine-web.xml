@@ -3,4 +3,5 @@
     <runtime>java8</runtime>
     <threadsafe>true</threadsafe>
     <instance-class>F2</instance-class>
+    <sessions-enabled>true</sessions-enabled>
 </appengine-web-app>

@@ -1,33 +1,60 @@
-const documentEditor = ace.edit(document.getElementById('documentEditor'), {
-  mode: 'ace/mode/json',
-  theme: 'ace/theme/katzenmilch',
-  fontSize: '14px'
-});
+import {getSheet} from '/sheet.js'
+
+const API_KEY = 'AIzaSyC97MSNOaclB2Xc7JnHgdIvMVlhDFI-LDg';
+const DISCOVERY_DOCS =
+    ['https://sheets.googleapis.com/$discovery/rest?version=v4'];
+
+const documentEditor = ace.edit(
+    document.getElementById('documentEditor'),
+    {mode: 'ace/mode/json', theme: 'ace/theme/katzenmilch', fontSize: '14px'});
+const doc = localStorage.getItem('document');
+if (doc !== null) {
+  documentEditor.setValue(doc, -1);
+}
 
 const inputButton = document.getElementById('importButton');
-inputButton.addEventListener('click', event => {
+inputButton.addEventListener('click', () => {
+  const progress = document.getElementById('importProgress');
+  progress.style.visibility = 'visible';
   gapi.load('client:auth2', () => {
-    gapi.client.init({
-      apiKey: 'AIzaSyC97MSNOaclB2Xc7JnHgdIvMVlhDFI-LDg',
-      clientId: '559178029904-nnh2tt89arkjvoihcfua4obgpth6076u.apps.googleusercontent.com',
-      discoveryDocs: ["https://sheets.googleapis.com/$discovery/rest?version=v4"],
-      scope: "https://www.googleapis.com/auth/drive.file"
-    }).then(() => {
-      if (!gapi.auth2.getAuthInstance().isSignedIn.get()) {
-        gapi.auth2.getAuthInstance().signIn();
-        return;
-      }
-
-      gapi.client.sheets.spreadsheets.create({
-        properties: {
-          title: 'good afternoon?'
-        }
-      }).then(response => {
-        alert(response);
-      });
-
-    }, error => {
-      alert(JSON.stringify(error, null, 2));
-    });
+    gapi.client.init({apiKey: API_KEY, discoveryDocs: DISCOVERY_DOCS})
+        .then(() => fetch('getToken'))
+        .then(response => {
+          if (!response.ok) {
+            alert(response.statusText);
+            progress.style.visibility = 'hidden';
+            return Promise.reject();
+          }
+          return response.json();
+        })
+        .then(data => {
+          if (!('accessToken' in data)) {
+            window.location.href = '/login';
+            progress.style.visibility = 'hidden';
+            return Promise.reject();
+          }
+          gapi.auth.setToken({
+            'access_token': data.accessToken,
+          });
+          return gapi.client.sheets.spreadsheets.create(
+              getSheet(JSON.parse(documentEditor.getValue())));
+        })
+        .catch(err => {
+          progress.style.visibility = 'hidden';
+          if (err.status === 401) {
+            window.location.href = '/logout?redirect=%2Flogin';
+          } else if (err instanceof Error) {
+            alert(err.message);
+          }
+        })
+        .then(response => {
+          location.href = response.result.spreadsheetUrl;
+        });
   });
+});
+
+document.addEventListener('visibilitychange', function logData() {
+  if (document.visibilityState === 'hidden') {
+    localStorage.setItem('document', documentEditor.getValue());
+  }
 });
