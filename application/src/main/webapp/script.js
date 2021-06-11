@@ -37,12 +37,20 @@ inputButton.addEventListener('click', () => {
             'access_token': data.accessToken,
           });
           return gapi.client.sheets.spreadsheets.create(
-              getSheet(JSON.parse(documentEditor.getValue())));
+              getSheet(JSON.parse(documentEditor.getValue())))  ;
         })
         .catch(err => {
           progress.style.visibility = 'hidden';
           if (err.status === 401) {
-            window.location.href = '/logout?redirect=%2Flogin';
+            if ('headers' in err && 'www-authenticate' in err.headers &&
+                err.headers['www-authenticate'].includes('invalid_token')) {
+              window.location.href = '/logout?redirect=%2Flogin';
+            } else if ('result' in err && 'error' in err.result &&
+                'message' in err.result.error) {
+              alert(err.result.error.message);
+            } else {
+              alert('Inauthenticated');
+            }
           } else if (err instanceof Error) {
             alert(err.message);
           }
