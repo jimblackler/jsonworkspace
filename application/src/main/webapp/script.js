@@ -39,6 +39,26 @@ inputButton.addEventListener('click', () => {
           return gapi.client.sheets.spreadsheets.create(
               getSheet(JSON.parse(documentEditor.getValue())));
         })
+        .then(
+            response =>
+                gapi.client.sheets.spreadsheets
+                    .batchUpdate({
+                      spreadsheetId: response.result.spreadsheetId,
+                      resource: {
+                        requests: [{
+                          'autoResizeDimensions': {
+                            'dimensions': {
+                              'sheetId':
+                                  response.result.sheets[0].properties.sheetId,
+                              'dimension': 'COLUMNS'
+                            }
+                          }
+                        }]
+                      }
+                    })
+                    .then(
+                        response1 => location.href =
+                            response.result.spreadsheetUrl))
         .catch(err => {
           progress.style.visibility = 'hidden';
           if (err.status === 401) {
@@ -55,9 +75,6 @@ inputButton.addEventListener('click', () => {
           } else if (err instanceof Error) {
             alert(err.message);
           }
-        })
-        .then(response => {
-          location.href = response.result.spreadsheetUrl;
         });
   });
 });
