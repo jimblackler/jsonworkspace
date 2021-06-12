@@ -65,13 +65,12 @@ inputButton.addEventListener('click', () => {
             if ('headers' in err && 'www-authenticate' in err.headers &&
                 err.headers['www-authenticate'].includes('invalid_token')) {
               window.location.href = '/logout?redirect=%2Flogin';
-            } else if (
-                'result' in err && 'error' in err.result &&
-                'message' in err.result.error) {
-              alert(err.result.error.message);
-            } else {
-              alert('Inauthenticated');
+              return;
             }
+          }
+          if ('result' in err && 'error' in err.result &&
+              'message' in err.result.error) {
+            alert(err.result.error.message);
           } else if (err instanceof Error) {
             alert(err.message);
           }
