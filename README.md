@@ -10,6 +10,16 @@ For example:
 ```json
 [
   {
+    "first name": "John",
+    "last name": "Lennon",
+    "birth year": 1940
+  },
+  {
+    "first name": "Paul",
+    "last name": "McCartney",
+    "birth year": 1942
+  },
+  {
     "first name": "George",
     "last name": "Harrison",
     "birth year": 1943
@@ -26,6 +36,8 @@ For example:
 
 first name | last name | birth year
 ---------- | --------- | ----------
+John       | Lennon    | 1940
+Paul       | McCartney | 1942
 George     | Harrison  | 1943
 Ringo      | Starr     | 1940
 
