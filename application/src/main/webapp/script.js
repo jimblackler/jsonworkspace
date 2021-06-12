@@ -1,3 +1,4 @@
+import {flattened} from '/flatten.js'
 import {getSheet} from '/sheet.js'
 
 const API_KEY = 'AIzaSyC97MSNOaclB2Xc7JnHgdIvMVlhDFI-LDg';
@@ -37,7 +38,7 @@ inputButton.addEventListener('click', () => {
             'access_token': data.accessToken,
           });
           return gapi.client.sheets.spreadsheets.create(
-              getSheet(JSON.parse(documentEditor.getValue())));
+              getSheet(flattened(JSON.parse(documentEditor.getValue()))));
         })
         .then(
             response =>
