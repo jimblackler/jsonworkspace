@@ -94,3 +94,5 @@ spreadsheet will be created with the user as the owner.
 
 The website application was developed by jimblackler@gmail.com and offered under
 an [Apache 2.0 license](https://www.apache.org/licenses/LICENSE-2.0).
+
+A short blog article is [here](https://jimblackler.net/blog/?p=553).
