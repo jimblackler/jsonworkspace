@@ -14,7 +14,7 @@ if (doc !== null) {
 }
 
 const inputButton = document.getElementById('importButton');
-inputButton.addEventListener('click', () => {
+const importData = () => {
   const progress = document.getElementById('importProgress');
   progress.style.visibility = 'visible';
   gapi.load('client:auth2', () => {
@@ -40,24 +40,24 @@ inputButton.addEventListener('click', () => {
           return gapi.client.sheets.spreadsheets.create(
               getSheet(flattened(JSON.parse(documentEditor.getValue()))));
         })
-        .then(
-            response =>
-                gapi.client.sheets.spreadsheets
-                    .batchUpdate({
-                      spreadsheetId: response.result.spreadsheetId,
-                      resource: {
-                        requests: [{
-                          autoResizeDimensions: {
-                            dimensions: {
-                              sheetId:
-                                  response.result.sheets[0].properties.sheetId,
-                              dimension: 'COLUMNS'
-                            }
-                          }
-                        }]
+        .then(response => {
+          localStorage.removeItem('importing');
+          return gapi.client.sheets.spreadsheets
+              .batchUpdate({
+                spreadsheetId: response.result.spreadsheetId,
+                resource: {
+                  requests: [{
+                    autoResizeDimensions: {
+                      dimensions: {
+                        sheetId: response.result.sheets[0].properties.sheetId,
+                        dimension: 'COLUMNS'
                       }
-                    })
-                    .then(() => location.href = response.result.spreadsheetUrl))
+                    }
+                  }]
+                }
+              })
+              .then(() => location.href = response.result.spreadsheetUrl);
+        })
         .catch(err => {
           progress.style.visibility = 'hidden';
           if (err.status === 401) {
@@ -67,6 +67,7 @@ inputButton.addEventListener('click', () => {
               return;
             }
           }
+          localStorage.removeItem('importing');
           if ('result' in err && 'error' in err.result &&
               'message' in err.result.error) {
             alert(err.result.error.message);
@@ -75,6 +76,15 @@ inputButton.addEventListener('click', () => {
           }
         });
   });
+};
+
+if (localStorage.getItem('importing')) {
+  importData();
+}
+
+inputButton.addEventListener('click', () => {
+  localStorage.setItem('importing', 'true');
+  importData();
 });
 
 document.addEventListener('visibilitychange', function logData() {
