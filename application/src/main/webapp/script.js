@@ -37,8 +37,12 @@ const importData = () => {
           gapi.auth.setToken({
             access_token: data.accessToken,
           });
-          return gapi.client.sheets.spreadsheets.create(
-              getSheet(flattened(JSON.parse(documentEditor.getValue()))));
+          const object = JSON.parse(documentEditor.getValue());
+          if (Array.isArray(object)) {
+            return gapi.client.sheets.spreadsheets.create(
+                getSheet(flattened(object)));
+          }
+          throw new Error('Data must be a JSON array');
         })
         .then(response => {
           localStorage.removeItem('importing');
