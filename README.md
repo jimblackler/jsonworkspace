@@ -81,6 +81,10 @@ Name           | Capital.Name | Capital.Population | Exports\[0\] | Exports\[1\]
 France         | Paris        | 2175000            | Machinery    | Vehicles     | Electricals
 United Kingdom | London       | 9304000            | Machinery    | Gems         | Vehicles
 
+There are no limits on rows or columns imposed by the importer, although Google
+Sheets has its own limits. If they are exceeded an error will be shown to users
+when Import is pressed.
+
 The tool requires the user to have a Google account, and the user must grant
 permission for the application to use the account to access the Google Sheets
 API.
