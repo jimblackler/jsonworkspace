@@ -35,7 +35,7 @@ inputButton.addEventListener('click', () => {
             return Promise.reject();
           }
           gapi.auth.setToken({
-            'access_token': data.accessToken,
+            access_token: data.accessToken,
           });
           return gapi.client.sheets.spreadsheets.create(
               getSheet(flattened(JSON.parse(documentEditor.getValue()))));
@@ -47,11 +47,11 @@ inputButton.addEventListener('click', () => {
                       spreadsheetId: response.result.spreadsheetId,
                       resource: {
                         requests: [{
-                          'autoResizeDimensions': {
-                            'dimensions': {
-                              'sheetId':
+                          autoResizeDimensions: {
+                            dimensions: {
+                              sheetId:
                                   response.result.sheets[0].properties.sheetId,
-                              'dimension': 'COLUMNS'
+                              dimension: 'COLUMNS'
                             }
                           }
                         }]
