@@ -57,9 +57,7 @@ inputButton.addEventListener('click', () => {
                         }]
                       }
                     })
-                    .then(
-                        response1 => location.href =
-                            response.result.spreadsheetUrl))
+                    .then(() => location.href = response.result.spreadsheetUrl))
         .catch(err => {
           progress.style.visibility = 'hidden';
           if (err.status === 401) {
