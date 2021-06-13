@@ -1,7 +1,7 @@
+import {API_KEY} from '/apiKey.js'
 import {flattened} from '/flatten.js'
 import {getSheet} from '/sheet.js'
 
-const API_KEY = 'AIzaSyC97MSNOaclB2Xc7JnHgdIvMVlhDFI-LDg';
 const DISCOVERY_DOCS =
     ['https://sheets.googleapis.com/$discovery/rest?version=v4'];
 
