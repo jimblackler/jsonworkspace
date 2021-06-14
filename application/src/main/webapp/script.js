@@ -14,8 +14,8 @@ if (doc !== null) {
 }
 
 const inputButton = document.getElementById('importButton');
+const progress = document.getElementById('importProgress');
 const importData = () => {
-  const progress = document.getElementById('importProgress');
   progress.style.visibility = 'visible';
   gapi.load('client:auth2', () => {
     gapi.client.init({apiKey: API_KEY, discoveryDocs: DISCOVERY_DOCS})
@@ -31,7 +31,6 @@ const importData = () => {
         .then(data => {
           if (!('accessToken' in data)) {
             window.location.href = '/login';
-            progress.style.visibility = 'hidden';
             return Promise.reject();
           }
           gapi.auth.setToken({
@@ -94,5 +93,7 @@ inputButton.addEventListener('click', () => {
 document.addEventListener('visibilitychange', function logData() {
   if (document.visibilityState === 'hidden') {
     localStorage.setItem('document', documentEditor.getValue());
+  } else if (document.visibilityState === 'visible') {
+    progress.style.visibility = 'hidden'
   }
 });
