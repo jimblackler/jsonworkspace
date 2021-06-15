@@ -62,7 +62,6 @@ const importData = () => {
               .then(() => location.href = response.result.spreadsheetUrl);
         })
         .catch(err => {
-          progress.style.visibility = 'hidden';
           if (err.status === 401) {
             if ('headers' in err && 'www-authenticate' in err.headers &&
                 err.headers['www-authenticate'].includes('invalid_token')) {
@@ -71,6 +70,7 @@ const importData = () => {
             }
           }
           localStorage.removeItem('importing');
+          progress.style.visibility = 'hidden';
           if ('result' in err && 'error' in err.result &&
               'message' in err.result.error) {
             alert(err.result.error.message);
